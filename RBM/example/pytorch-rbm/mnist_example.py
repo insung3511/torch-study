@@ -1,3 +1,5 @@
+# https://github.com/GabrielBianconi/pytorch-rbm
+
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 import torch
@@ -12,7 +14,7 @@ from rbm import RBM
 BATCH_SIZE = 64
 VISIBLE_UNITS = 784  # 28 x 28 images
 HIDDEN_UNITS = 128
-CD_K = 2
+CD_K = 5
 EPOCHS = 10
 
 DATA_FOLDER = 'data/mnist'
@@ -52,7 +54,7 @@ for epoch in range(EPOCHS):
 
         epoch_error += batch_error
 
-    print('Epoch Error (epoch=%d): %.4f' % (epoch, epoch_error))
+    print('Epoch Error (epoch=%d): %.4f' % (epoch, epoch_error * 0.000001))
 
 
 ########## EXTRACT FEATURES ##########
