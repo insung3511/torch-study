@@ -9,7 +9,7 @@ import torch.nn.init as init
 import torch.nn.functional as F
 from torchvision import transforms, datasets
 
-DEVICE = torch.device('cpu')
+DEVICE = torch.device('mps')
 print("Using PyTorch version: ", torch.__version__, " Device: ", DEVICE)
 
 BATCH_SIZE = 32
