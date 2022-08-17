@@ -6,7 +6,7 @@ import torch.utils.data
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from torch.autograd import Variable 
+from torch.autograd import Variable
 from torchvision import datasets, transforms
 from torchvision.utils import make_grid, save_image
 import matplotlib as plt
@@ -17,26 +17,27 @@ BATCH_SIZE = 64
 # create train loader
 train_loader = torch.utils.data.DataLoader(
     datasets.MNIST('./data',
-        train = True,
-        download = True, 
-        transform = transforms.Compose(
-            [transforms.ToTensor()]
-        )
-    ), batch_size=BATCH_SIZE
+                   train=True,
+                   download=True,
+                   transform=transforms.Compose(
+                       [transforms.ToTensor()]
+                   )
+                   ), batch_size=BATCH_SIZE
 )
 
 # create test loader
 test_loader = torch.utils.data.DataLoader(
     datasets.MNIST('./data',
-        train = False,
-        transform = transforms.Compose(
-            [transforms.ToTensor()]
-        )
-    ), batch_size=BATCH_SIZE
+                   train=False,
+                   transform=transforms.Compose(
+                       [transforms.ToTensor()]
+                   )
+                   ), batch_size=BATCH_SIZE
 )
 
+
 class RBM(nn.Module):
-    def __init__(self, n_vis = 784, n_hid = 500, k=5):
+    def __init__(self, n_vis=784, n_hid=500, k=5):
         super(RBM, self).__init__()
         self.W = nn.Parameter(torch.randn(n_hid, n_vis) * 1e-2)
         self.v_bias = nn.Parameter(torch.zeros(n_vis))
@@ -67,7 +68,8 @@ class RBM(nn.Module):
         hidden_term = wx_b.exp().add(1).log().sum(1)
         return (-hidden_term - vbias_term).mean()
 
-rbm = RBM(k = 1)
+
+rbm = RBM(k=1)
 train_op = optim.SGD(rbm.parameters(), 0.1)
 
 for epoch in range(10):
@@ -85,11 +87,13 @@ for epoch in range(10):
 
     print("Training loss for {} epoch: {}".format(epoch, np.mean(loss)))
 
+
 def show_and_save(file_name, img):
     npimg = np.transpose(img.numpy(), (1, 2, 0))
     f = "./%s.png" % file_name
     plt.imshow(npimg)
     plt.imsave(f, npimg)
 
+
 show_and_save("real", make_grid(v.view(32, 1, 28, 28).data))
-show_and_save("generate",make_grid(v1.view(32,1,28,28).data))
+show_and_save("generate", make_grid(v1.view(32, 1, 28, 28).data))

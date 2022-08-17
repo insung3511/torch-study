@@ -22,9 +22,11 @@ BATCH_SIZE = 64
 DATA_PATH = "./pickle/"
 DEVICE = torch.device("mps")
 
+
 def list_to_list(input_list):
     input_list_to_list = list(itertools.chain(*input_list))
     return input_list_to_list
+
 
 record_list = []
 pickle_input = dict()
@@ -59,18 +61,21 @@ for i in tqdm(range(len(record_list))):
             elif check_ann == "F":          # False alarm
                 temp_ann_list.append(3)
 
-            else:                           # Unclassed 
+            else:                           # Unclassed
                 temp_ann_list.append(4)
             y.append(temp_ann_list)
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42, shuffle=True)
-X_test, X_val, y_test, y_val = train_test_split(X_test, y_test, test_size=0.33, random_state=42, shuffle=True)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.33, random_state=42, shuffle=True)
+X_test, X_val, y_test, y_val = train_test_split(
+    X_test, y_test, test_size=0.33, random_state=42, shuffle=True)
+
 
 class TrainDataset(Dataset):
     def __init__(self):
         self.X = X_train
         self.y = y_train
-    
+
     def __len__(self):
         return len(self.X)
 
@@ -78,12 +83,13 @@ class TrainDataset(Dataset):
         X = torch.FloatTensor(self.X[idx])
         y = torch.FloatTensor(self.y[idx])
         return X, y
+
 
 class TestDataset(Dataset):
     def __init__(self):
         self.X = X_test
         self.y = y_test
-    
+
     def __len__(self):
         return len(self.X)
 
@@ -91,12 +97,13 @@ class TestDataset(Dataset):
         X = torch.FloatTensor(self.X[idx])
         y = torch.FloatTensor(self.y[idx])
         return X, y
+
 
 class ValidationDataset(Dataset):
     def __init__(self):
         self.X = X_val
         self.y = y_val
-    
+
     def __len__(self):
         return len(self.X)
 
@@ -104,21 +111,25 @@ class ValidationDataset(Dataset):
         X = torch.FloatTensor(self.X[idx])
         y = torch.FloatTensor(self.y[idx])
         return X, y
-    
+
+
 train_dataset = TrainDataset()
-train_dataloader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
+train_dataloader = DataLoader(
+    train_dataset, batch_size=BATCH_SIZE, shuffle=True)
 
 test_dataset = TestDataset()
 test_dataloader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=True)
 
 validation_dataset = ValidationDataset()
-validation_dataloader = DataLoader(validation_dataset, batch_size=BATCH_SIZE, shuffle=True)
+validation_dataloader = DataLoader(
+    validation_dataset, batch_size=BATCH_SIZE, shuffle=True)
 
 model = Model().to(DEVICE)
-optimizer = torch.optim.Adam(model.parameters(), lr = 0.001)
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 criterion = nn.CrossEntropyLoss()
 
 print(model)
+
 
 def train(model, train_loader, optimizer, log_interval):
     model.train()
@@ -139,8 +150,10 @@ def train(model, train_loader, optimizer, log_interval):
         optimizer.step()
 
         if batch_idx % log_interval == 0:
-            print("Train Epoch: {} [{}/{}({:.0f}%)]\tTrain Loss: {:.6F}".format(Epoch, batch_idx * len(x_data), len(train_loader.dataset), 100. * batch_idx / len(train_loader), loss.item()))
-        
+            print("Train Epoch: {} [{}/{}({:.0f}%)]\tTrain Loss: {:.6F}".format(Epoch, batch_idx * len(
+                x_data), len(train_loader.dataset), 100. * batch_idx / len(train_loader), loss.item()))
+
+
 def evaluate(model, test_loader):
     model.eval()
     test_loss = 0
@@ -152,14 +165,16 @@ def evaluate(model, test_loader):
             y = y.to(DEVICE)
             output = model(x)
             test_loss += criterion(output, y).item()
-            prediction = output.max(1, keepdim = True)[1]
+            prediction = output.max(1, keepdim=True)[1]
             correct += prediction.eq(y.view_as(prediction)).sum().item()
-        
+
     test_loss /= len(test_loader.dataset)
     test_accuracy = 100. * correct / len(test_loader.dataset)
     return test_loss, test_accuracy
 
+
 for Epoch in range(1, EPOCH + 1):
     train(model, train_dataloader, optimizer, log_interval=200)
     test_loss, test_accuracy = evaluate(model, test_dataloader)
-    print("\n[EPOCH: {}], \tTest Loss: {:.4f}, \tTest Accuracy: {:.2f} %\n".format(Epoch, test_loss, test_accuracy))
+    print("\n[EPOCH: {}], \tTest Loss: {:.4f}, \tTest Accuracy: {:.2f} %\n".format(
+        Epoch, test_loss, test_accuracy))
