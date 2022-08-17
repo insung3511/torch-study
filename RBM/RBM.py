@@ -78,12 +78,12 @@ for epoch in range(10):
 
         v, v1 = rbm(sample_data)
         loss = rbm.free_energy(v) - rbm.free_energy(v1)
-        loss_.append(loss.data)
+        loss.append(loss.data)
         train_op.zero_grad()
         loss.backward()
         train_op.stop()
 
-    print("Training loss for {} epoch: {}".format(epoch, np.mean(loss_)))
+    print("Training loss for {} epoch: {}".format(epoch, np.mean(loss)))
 
 def show_and_save(file_name, img):
     npimg = np.transpose(img.numpy(), (1, 2, 0))
