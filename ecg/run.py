@@ -63,15 +63,20 @@ for i in tqdm(range(len(record_list))):
                 temp_ann_list.append(4)
             y.append(temp_ann_list)
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.33, random_state=42, shuffle=True
-)
-X_test, X_val, y_test, y_val = train_test_split(
-    X_test, y_test, test_size=0.33, random_state=42, shuffle=True
-)
+X_train, X_test, y_train, y_test = train_test_split(X,
+                                                    y,
+                                                    test_size=0.33,
+                                                    random_state=42,
+                                                    shuffle=True)
+X_test, X_val, y_test, y_val = train_test_split(X_test,
+                                                y_test,
+                                                test_size=0.33,
+                                                random_state=42,
+                                                shuffle=True)
 
 
 class TrainDataset(Dataset):
+
     def __init__(self):
         self.X = X_train
         self.y = y_train
@@ -86,6 +91,7 @@ class TrainDataset(Dataset):
 
 
 class TestDataset(Dataset):
+
     def __init__(self):
         self.X = X_test
         self.y = y_test
@@ -100,6 +106,7 @@ class TestDataset(Dataset):
 
 
 class ValidationDataset(Dataset):
+
     def __init__(self):
         self.X = X_val
         self.y = y_val
@@ -114,15 +121,17 @@ class ValidationDataset(Dataset):
 
 
 train_dataset = TrainDataset()
-train_dataloader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
+train_dataloader = DataLoader(train_dataset,
+                              batch_size=BATCH_SIZE,
+                              shuffle=True)
 
 test_dataset = TestDataset()
 test_dataloader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=True)
 
 validation_dataset = ValidationDataset()
-validation_dataloader = DataLoader(
-    validation_dataset, batch_size=BATCH_SIZE, shuffle=True
-)
+validation_dataloader = DataLoader(validation_dataset,
+                                   batch_size=BATCH_SIZE,
+                                   shuffle=True)
 
 model = Model().to(DEVICE)
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
@@ -157,8 +166,7 @@ def train(model, train_loader, optimizer, log_interval):
                     len(train_loader.dataset),
                     100.0 * batch_idx / len(train_loader),
                     loss.item(),
-                )
-            )
+                ))
 
 
 def evaluate(model, test_loader):
@@ -183,8 +191,5 @@ def evaluate(model, test_loader):
 for Epoch in range(1, EPOCH + 1):
     train(model, train_dataloader, optimizer, log_interval=200)
     test_loss, test_accuracy = evaluate(model, test_dataloader)
-    print(
-        "\n[EPOCH: {}], \tTest Loss: {:.4f}, \tTest Accuracy: {:.2f} %\n".format(
-            Epoch, test_loss, test_accuracy
-        )
-    )
+    print("\n[EPOCH: {}], \tTest Loss: {:.4f}, \tTest Accuracy: {:.2f} %\n".
+          format(Epoch, test_loss, test_accuracy))
