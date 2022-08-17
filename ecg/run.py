@@ -17,7 +17,7 @@ import pickle
 EPOCH = 200
 KERNEL_SIZE = 3
 POOLING_SIZE = 2
-BATCH_SIZE = 128
+BATCH_SIZE = 64
 
 DATA_PATH = "./pickle/"
 DEVICE = torch.device("mps")
@@ -130,6 +130,9 @@ def train(model, train_loader, optimizer, log_interval):
 
         optimizer.zero_grad()
         output = model(x_data)
+
+        print(y_data.size())
+        print(output.size())
 
         loss = criterion(output, y_data)
         loss.backward()
