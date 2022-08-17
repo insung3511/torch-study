@@ -8,7 +8,8 @@ import torch.nn.functional as F
 from model import Model
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader
+from torch.utils.data import Dataset
 from tqdm import tqdm
 
 EPOCH = 200
