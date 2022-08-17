@@ -33,7 +33,7 @@ pickle_input = dict()
 X, y = [], []
 
 print("[INFO] Read records file from ", DATA_PATH)
-with open(DATA_PATH + 'RECORDS') as f:
+with open(DATA_PATH + "RECORDS") as f:
     record_lines = f.readlines()
 
 for i in range(len(record_lines)):
@@ -41,7 +41,7 @@ for i in range(len(record_lines)):
 
 for i in tqdm(range(len(record_list))):
     temp_path = DATA_PATH + "mit" + record_list[i] + ".pkl"
-    with open(temp_path, 'rb') as f:
+    with open(temp_path, "rb") as f:
         pickle_input = pickle.load(f)
         for i in range(len(pickle_input[0])):
             X.append(pickle_input[0][i])
@@ -49,26 +49,28 @@ for i in tqdm(range(len(record_list))):
         for i in range(len(pickle_input[1])):
             check_ann = pickle_input[1][i]
             temp_ann_list = list()
-            if check_ann == "N":            # Normal
+            if check_ann == "N":  # Normal
                 temp_ann_list.append(0)
 
-            elif check_ann == "S":          # Supra-ventricular
+            elif check_ann == "S":  # Supra-ventricular
                 temp_ann_list.append(1)
 
-            elif check_ann == "V":          # Ventricular
+            elif check_ann == "V":  # Ventricular
                 temp_ann_list.append(2)
 
-            elif check_ann == "F":          # False alarm
+            elif check_ann == "F":  # False alarm
                 temp_ann_list.append(3)
 
-            else:                           # Unclassed
+            else:  # Unclassed
                 temp_ann_list.append(4)
             y.append(temp_ann_list)
 
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.33, random_state=42, shuffle=True)
+    X, y, test_size=0.33, random_state=42, shuffle=True
+)
 X_test, X_val, y_test, y_val = train_test_split(
-    X_test, y_test, test_size=0.33, random_state=42, shuffle=True)
+    X_test, y_test, test_size=0.33, random_state=42, shuffle=True
+)
 
 
 class TrainDataset(Dataset):
@@ -114,15 +116,15 @@ class ValidationDataset(Dataset):
 
 
 train_dataset = TrainDataset()
-train_dataloader = DataLoader(
-    train_dataset, batch_size=BATCH_SIZE, shuffle=True)
+train_dataloader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
 
 test_dataset = TestDataset()
 test_dataloader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=True)
 
 validation_dataset = ValidationDataset()
 validation_dataloader = DataLoader(
-    validation_dataset, batch_size=BATCH_SIZE, shuffle=True)
+    validation_dataset, batch_size=BATCH_SIZE, shuffle=True
+)
 
 model = Model().to(DEVICE)
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
@@ -150,8 +152,15 @@ def train(model, train_loader, optimizer, log_interval):
         optimizer.step()
 
         if batch_idx % log_interval == 0:
-            print("Train Epoch: {} [{}/{}({:.0f}%)]\tTrain Loss: {:.6F}".format(Epoch, batch_idx * len(
-                x_data), len(train_loader.dataset), 100. * batch_idx / len(train_loader), loss.item()))
+            print(
+                "Train Epoch: {} [{}/{}({:.0f}%)]\tTrain Loss: {:.6F}".format(
+                    Epoch,
+                    batch_idx * len(x_data),
+                    len(train_loader.dataset),
+                    100.0 * batch_idx / len(train_loader),
+                    loss.item(),
+                )
+            )
 
 
 def evaluate(model, test_loader):
@@ -169,12 +178,15 @@ def evaluate(model, test_loader):
             correct += prediction.eq(y.view_as(prediction)).sum().item()
 
     test_loss /= len(test_loader.dataset)
-    test_accuracy = 100. * correct / len(test_loader.dataset)
+    test_accuracy = 100.0 * correct / len(test_loader.dataset)
     return test_loss, test_accuracy
 
 
 for Epoch in range(1, EPOCH + 1):
     train(model, train_dataloader, optimizer, log_interval=200)
     test_loss, test_accuracy = evaluate(model, test_dataloader)
-    print("\n[EPOCH: {}], \tTest Loss: {:.4f}, \tTest Accuracy: {:.2f} %\n".format(
-        Epoch, test_loss, test_accuracy))
+    print(
+        "\n[EPOCH: {}], \tTest Loss: {:.4f}, \tTest Accuracy: {:.2f} %\n".format(
+            Epoch, test_loss, test_accuracy
+        )
+    )

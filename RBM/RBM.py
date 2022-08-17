@@ -16,23 +16,21 @@ BATCH_SIZE = 64
 
 # create train loader
 train_loader = torch.utils.data.DataLoader(
-    datasets.MNIST('./data',
-                   train=True,
-                   download=True,
-                   transform=transforms.Compose(
-                       [transforms.ToTensor()]
-                   )
-                   ), batch_size=BATCH_SIZE
+    datasets.MNIST(
+        "./data",
+        train=True,
+        download=True,
+        transform=transforms.Compose([transforms.ToTensor()]),
+    ),
+    batch_size=BATCH_SIZE,
 )
 
 # create test loader
 test_loader = torch.utils.data.DataLoader(
-    datasets.MNIST('./data',
-                   train=False,
-                   transform=transforms.Compose(
-                       [transforms.ToTensor()]
-                   )
-                   ), batch_size=BATCH_SIZE
+    datasets.MNIST(
+        "./data", train=False, transform=transforms.Compose([transforms.ToTensor()])
+    ),
+    batch_size=BATCH_SIZE,
 )
 
 
