@@ -1,18 +1,15 @@
-from sklearn.model_selection import train_test_split
-from sklearn import preprocessing
-from tqdm import tqdm
-
-from torch.utils.data import DataLoader
-from torch.utils.data import Dataset
-import torch.nn.functional as F
-import torch.nn as nn
-import torch
-
-from model import Model
-
-import numpy as np
 import itertools
 import pickle
+
+import numpy as np
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from model import Model
+from sklearn import preprocessing
+from sklearn.model_selection import train_test_split
+from torch.utils.data import DataLoader, Dataset
+from tqdm import tqdm
 
 EPOCH = 200
 KERNEL_SIZE = 3

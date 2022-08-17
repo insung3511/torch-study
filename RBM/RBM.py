@@ -1,15 +1,16 @@
 # reference from https://blog.paperspace.com/beginners-guide-to-boltzmann-machines-pytorch/
 from random import sample
+
+import matplotlib as plt
 import numpy as np
 import torch
-import torch.utils.data
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+import torch.utils.data
 from torch.autograd import Variable
 from torchvision import datasets, transforms
 from torchvision.utils import make_grid, save_image
-import matplotlib as plt
 
 # Set scalar variables
 BATCH_SIZE = 64
