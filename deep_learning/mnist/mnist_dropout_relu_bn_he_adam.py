@@ -13,7 +13,7 @@ DEVICE = torch.device('mps')
 print("Using PyTorch version: ", torch.__version__, " Device: ", DEVICE)
 
 BATCH_SIZE = 32
-EPOCHS = 10
+EPOCHS = 100
 
 train_dataset = datasets.MNIST(root = "../data/MNIST",
                                 train = True,

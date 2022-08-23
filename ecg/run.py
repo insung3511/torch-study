@@ -74,9 +74,7 @@ X_test, X_val, y_test, y_val = train_test_split(X_test,
                                                 random_state=42,
                                                 shuffle=True)
 
-
 class TrainDataset(Dataset):
-
     def __init__(self):
         self.X = X_train
         self.y = y_train
@@ -91,7 +89,6 @@ class TrainDataset(Dataset):
 
 
 class TestDataset(Dataset):
-
     def __init__(self):
         self.X = X_test
         self.y = y_test
@@ -106,7 +103,6 @@ class TestDataset(Dataset):
 
 
 class ValidationDataset(Dataset):
-
     def __init__(self):
         self.X = X_val
         self.y = y_val
@@ -125,20 +121,19 @@ train_dataloader = DataLoader(train_dataset,
                               batch_size=BATCH_SIZE,
                               shuffle=True)
 
-test_dataset = TestDataset()
-test_dataloader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=True)
-
 validation_dataset = ValidationDataset()
 validation_dataloader = DataLoader(validation_dataset,
                                    batch_size=BATCH_SIZE,
                                    shuffle=True)
+
+test_dataset = TestDataset()
+test_dataloader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=True)
 
 model = Model().to(DEVICE)
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 criterion = nn.CrossEntropyLoss()
 
 print(model)
-
 
 def train(model, train_loader, optimizer, log_interval):
     model.train()
