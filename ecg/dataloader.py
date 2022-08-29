@@ -1,7 +1,8 @@
 from cgi import test
 from logging import root
-from torchvision.transforms import ToTensor, Lambda
+
 from torchvision import datasets
+from torchvision.transforms import Lambda, ToTensor
 
 
 class Dataset:

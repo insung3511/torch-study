@@ -1,11 +1,9 @@
-from torchvision.transforms import ToTensor, Lambda
-from torchvision import datasets
-
-from torch.utils.data import DataLoader
-import torch.nn as nn
 import torch
-
+import torch.nn as nn
 from dataloader import Dataset
+from torch.utils.data import DataLoader
+from torchvision import datasets
+from torchvision.transforms import Lambda, ToTensor
 
 BATCH_SIZE = 64
 EPOCH = 100
