@@ -2,7 +2,8 @@ import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torchvision import datasets, transforms
+from torchvision import datasets
+from torchvision import transforms
 
 DEVICE = torch.device("cpu")
 print("Using PyTorch version: ", torch.__version__, " Device: ", DEVICE)
