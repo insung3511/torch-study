@@ -9,11 +9,14 @@ from torchvision.transforms import ToTensor
 BATCH_SIZE = 64
 EPOCH = 100
 
-train_dataloader = DataLoader(Dataset.train_data("../data/"), batch_size=BATCH_SIZE)
-test_dataloader = DataLoader(Dataset.test_data("../data/"), batch_size=BATCH_SIZE)
+train_dataloader = DataLoader(Dataset.train_data("../data/"),
+                              batch_size=BATCH_SIZE)
+test_dataloader = DataLoader(Dataset.test_data("../data/"),
+                             batch_size=BATCH_SIZE)
 
 
 class Model(nn.Module):
+
     def __init__(self) -> None:
         super(Model, self).__init__()
         self.flatten = nn.Flatten()
