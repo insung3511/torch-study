@@ -27,4 +27,3 @@ class Dataset():
         )
 
         return test_data
-
