@@ -29,15 +29,14 @@ train_loader = torch.utils.data.DataLoader(
 
 # create test loader
 test_loader = torch.utils.data.DataLoader(
-    datasets.MNIST("./data",
-                   train=False,
-                   transform=transforms.Compose([transforms.ToTensor()])),
+    datasets.MNIST(
+        "./data", train=False, transform=transforms.Compose([transforms.ToTensor()])
+    ),
     batch_size=BATCH_SIZE,
 )
 
 
 class RBM(nn.Module):
-
     def __init__(self, n_vis=784, n_hid=500, k=5):
         super(RBM, self).__init__()
         self.W = nn.Parameter(torch.randn(n_hid, n_vis) * 1e-2)
