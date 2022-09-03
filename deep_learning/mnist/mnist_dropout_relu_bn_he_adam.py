@@ -8,7 +8,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.nn.init as init
-from torchvision import datasets, transforms
+from torchvision import datasets
+from torchvision import transforms
 
 DEVICE = torch.device("mps")
 print("Using PyTorch version: ", torch.__version__, " Device: ", DEVICE)
