@@ -3,8 +3,7 @@ import torch.nn as nn
 from dataloader import Dataset
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
-from torchvision.transforms import Lambda
-from torchvision.transforms import ToTensor
+from torchvision.transforms import Lambda, ToTensor
 
 BATCH_SIZE = 64
 EPOCH = 100
