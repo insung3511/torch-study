@@ -2,12 +2,13 @@ from base64 import encode
 from logging import critical
 from pickletools import optimize
 from random import shuffle
+
+import matplotlib.pyplot as plt
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torchvision import transforms, datasets
-import numpy as np
-import matplotlib.pyplot as plt
+from torchvision import datasets, transforms
 
 DEVICE = torch.device("cpu")
 print("Using Pytorch version: ", torch.__version__, "Device: ", DEVICE)

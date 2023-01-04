@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.models as models
-from torchvision import transforms, datasets
+from torchvision import datasets, transforms
 
 DEVICE = torch.device("cpu")
 

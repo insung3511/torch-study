@@ -1,11 +1,12 @@
 from pickletools import optimize
 from random import shuffle
+
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torchvision import transforms, datasets
+from torchvision import datasets, transforms
 
 DEVICE = torch.device("cpu")
 print("Using PyTorch version: ", torch.__version__, " Device: ", DEVICE)

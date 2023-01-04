@@ -1,4 +1,5 @@
 from importlib.metadata import requires
+
 import torch
 
 if torch.cuda.is_available():

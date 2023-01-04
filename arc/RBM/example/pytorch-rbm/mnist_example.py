@@ -1,14 +1,12 @@
 # https://github.com/GabrielBianconi/pytorch-rbm
 
 import numpy as np
-from sklearn.linear_model import LogisticRegression
 import torch
 import torchvision.datasets
 import torchvision.models
 import torchvision.transforms
-
 from rbm import RBM
-
+from sklearn.linear_model import LogisticRegression
 
 ########## CONFIGURATION ##########
 BATCH_SIZE = 64

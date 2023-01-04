@@ -1,6 +1,5 @@
 # from msilib import sequence
-from torchtext.legacy import data
-from torchtext.legacy import datasets
+from torchtext.legacy import data, datasets
 
 TEXT = data.Field(lower=True, batch_first=True)
 LABEL = data.Field(sequential=False)
