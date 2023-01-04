@@ -30,7 +30,6 @@ print(torch.sub(vector1, vector2))
 print(torch.mul(vector1, vector2))
 print(torch.div(vector1, vector2))
 print(torch.dot(vector1, vector2))
-
 """torch dot
 dot product is scalar product. solving answer its like this.
 vector(a) = (a, b, c), vector(b) = (d, e, f)

@@ -23,22 +23,20 @@ optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 criterion = nn.CrossEntropyLoss()
 
 data_transform = {
-    "train": transforms.Compose(
-        [
-            transforms.RandomResizedCrop(224),
-            transforms.RandomHorizontalFlip(),
-            transforms.ToTensor(),
-            transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
-        ]
-    ),
-    "val": transforms.Compose(
-        [
-            transforms.CenterCrop(224),
-            transforms.Resize(256),
-            transforms.ToTensor(),
-            transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
-        ]
-    ),
+    "train":
+    transforms.Compose([
+        transforms.RandomResizedCrop(224),
+        transforms.RandomHorizontalFlip(),
+        transforms.ToTensor(),
+        transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
+    ]),
+    "val":
+    transforms.Compose([
+        transforms.CenterCrop(224),
+        transforms.Resize(256),
+        transforms.ToTensor(),
+        transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
+    ]),
 }
 
 image_datasets = {
@@ -47,9 +45,10 @@ image_datasets = {
 }
 
 dataloaders = {
-    x: torch.utils.data.DataLoader(
-        image_datasets[x], batch_size=BATCH_SIZE, num_workers=0, shuffle=True
-    )
+    x: torch.utils.data.DataLoader(image_datasets[x],
+                                   batch_size=BATCH_SIZE,
+                                   num_workers=0,
+                                   shuffle=True)
     for x in ["train", "val"]
 }
 
@@ -62,7 +61,7 @@ for (X_train, y_train) in dataloaders["train"]:
 def train(model, train_loader, optimizer, log_interval):
     model.train()
     for (
-        batch_idx,
+            batch_idx,
         (image, label),
     ) in enumerate(train_loader):
         image = image.to(DEVICE)
@@ -98,5 +97,7 @@ def evaluate(model, test_loader):
         test_loss /= len(test_loader.dataset)
         test_accuracy = 100.0 * correct / len(test_loader.dataset)
 
-        print(f"Test Epoch: ?\tAccuracy: {test_accuracy:.5f}\tLoss: {test_loss:.5f}")
+        print(
+            f"Test Epoch: ?\tAccuracy: {test_accuracy:.5f}\tLoss: {test_loss:.5f}"
+        )
         return test_loss, test_accuracy

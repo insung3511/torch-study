@@ -17,10 +17,8 @@ for sentence in [S1, S2, S3]:
 print(token2idx)
 
 V = len(token2idx)
-token2vec = [
-    ([0 if i != token2idx else 1 for i in range(V)], idx, token)
-    for token, idx in token2idx.items()
-]
+token2vec = [([0 if i != token2idx else 1 for i in range(V)], idx, token)
+             for token, idx in token2idx.items()]
 
 for x in token2vec:
     print("\\t".join([str(y) for y in x]))

@@ -24,17 +24,17 @@ train_dataset = datasets.FashionMNIST(
     transform=transforms.ToTensor(),
 )
 
-test_dataset = datasets.FashionMNIST(
-    root="../data/FashionMNIST", train=False, transform=transforms.ToTensor()
-)
+test_dataset = datasets.FashionMNIST(root="../data/FashionMNIST",
+                                     train=False,
+                                     transform=transforms.ToTensor())
 
-train_loader = torch.utils.data.DataLoader(
-    dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True
-)
+train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
+                                           batch_size=BATCH_SIZE,
+                                           shuffle=True)
 
-test_loader = torch.utils.data.DataLoader(
-    dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=False
-)
+test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
+                                          batch_size=BATCH_SIZE,
+                                          shuffle=False)
 
 for (X_train, y_train) in train_loader:
     print("X_train: ", X_train.size(), "type: ", X_train.type())
@@ -52,6 +52,7 @@ for i in range(10):
 
 
 class AE(nn.Module):
+
     def __init__(self):
         super(AE, self).__init__()
 
@@ -103,8 +104,7 @@ def train(model, train_loader, optimizer, log_interval):
                     len(train_loader.dataset),
                     100.0 * batch_idx / len(train_loader),
                     loss.item(),
-                )
-            )
+                ))
 
 
 def evalute(model, test_loader):

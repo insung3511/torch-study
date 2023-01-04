@@ -10,7 +10,6 @@ from torchvision.transforms import ToTensor
 BATCH_SIZE = 64
 EPOCH = 100
 
-
 train_dataset = datasets.FashionMNIST(
     root="../data/FashionMNIST",
     train=True,
@@ -18,20 +17,21 @@ train_dataset = datasets.FashionMNIST(
     transform=transforms.ToTensor(),
 )
 
-test_dataset = datasets.FashionMNIST(
-    root="../data/FashionMNIST", train=False, transform=transforms.ToTensor()
-)
+test_dataset = datasets.FashionMNIST(root="../data/FashionMNIST",
+                                     train=False,
+                                     transform=transforms.ToTensor())
 
-train_loader = torch.utils.data.DataLoader(
-    dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True
-)
+train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
+                                           batch_size=BATCH_SIZE,
+                                           shuffle=True)
 
-test_loader = torch.utils.data.DataLoader(
-    dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=False
-)
+test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
+                                          batch_size=BATCH_SIZE,
+                                          shuffle=False)
 
 
 class Model(nn.Module):
+
     def __init__(self) -> None:
         super(Model, self).__init__()
         self.flatten = nn.Flatten()
