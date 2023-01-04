@@ -1,11 +1,11 @@
 import torch
 
 # Create scalar: 1
-scalar1 = torch.tensor([1.])
+scalar1 = torch.tensor([1.0])
 print(scalar1)
 
 # Create scalar: 3
-scalar2 = torch.tensor([3.])
+scalar2 = torch.tensor([3.0])
 print(scalar2)
 
 # [Text] Okay, here is the caculating scalar by scalar.

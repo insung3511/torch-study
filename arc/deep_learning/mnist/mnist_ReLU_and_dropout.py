@@ -11,22 +11,21 @@ print("Using PyTorch version: ", torch.__version__, " Device: ", DEVICE)
 BATCH_SIZE = 32
 EPOCHS = 10
 
-train_dataset = datasets.MNIST(root="../data/MNIST",
-                               train=True,
-                               download=True,
-                               transform=transforms.ToTensor())
+train_dataset = datasets.MNIST(
+    root="../data/MNIST", train=True, download=True, transform=transforms.ToTensor()
+)
 
-test_dataset = datasets.MNIST(root="../data/MNIST",
-                              train=False,
-                              transform=transforms.ToTensor())
+test_dataset = datasets.MNIST(
+    root="../data/MNIST", train=False, transform=transforms.ToTensor()
+)
 
-train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
-                                           batch_size=BATCH_SIZE,
-                                           shuffle=True)
+train_loader = torch.utils.data.DataLoader(
+    dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True
+)
 
-test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
-                                          batch_size=BATCH_SIZE,
-                                          shuffle=False)
+test_loader = torch.utils.data.DataLoader(
+    dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=False
+)
 
 for (X_train, y_train) in train_loader:
     print("X_train: ", X_train.size(), "type: ", X_train.type())
@@ -43,7 +42,6 @@ for i in range(10):
 
 
 class Net(nn.Module):
-
     def __init__(self):
         super(Net, self).__init__()
         self.fc1 = nn.Linear(28 * 28, 512)
@@ -95,7 +93,8 @@ def train(model, train_loader, optimizer, log_interval):
                     len(train_loader.dataset),
                     100.0 * batch_idx / len(train_loader),
                     loss.item(),
-                ))
+                )
+            )
 
 
 def evaluate(model, test_loader):
@@ -120,5 +119,8 @@ def evaluate(model, test_loader):
 for Epoch in range(1, EPOCHS + 1):
     train(model, train_loader, optimizer, log_interval=200)
     test_loss, test_accuracy = evaluate(model, test_loader)
-    print("\n[EPOCH: {}], \tTest Loss: {:.4f}, \tTest Accuracy: {:.2f} %\n".
-          format(Epoch, test_loss, test_accuracy))
+    print(
+        "\n[EPOCH: {}], \tTest Loss: {:.4f}, \tTest Accuracy: {:.2f} %\n".format(
+            Epoch, test_loss, test_accuracy
+        )
+    )

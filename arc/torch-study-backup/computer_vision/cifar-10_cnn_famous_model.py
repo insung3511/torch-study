@@ -8,37 +8,43 @@ import torch.nn.functional as F
 import torchvision.models as models
 from torchvision import transforms, datasets
 
-DEVICE = torch.device('cpu')
+DEVICE = torch.device("cpu")
 print("Using PyTorch version: ", torch.__version__, " Device: ", DEVICE)
 
 BATCH_SIZE = 32
 EPOCHS = 30
 
-train_dataset = datasets.CIFAR10(root="../data/CIFAR_10",
-                                 train=True,
-                                 download=True,
-                                 transform=transforms.Compose([
-                                     transforms.RandomHorizontalFlip(),
-                                     transforms.ToTensor(),
-                                     transforms.Normalize(
-                                         (0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-                                 ]))
-test_dataset = datasets.CIFAR10(root="../data/CIFAR_10",
-                                train=False,
-                                transform=transforms.Compose([
-                                    transforms.RandomHorizontalFlip(),
-                                    transforms.ToTensor(),
-                                    transforms.Normalize(
-                                        (0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-                                ]))
+train_dataset = datasets.CIFAR10(
+    root="../data/CIFAR_10",
+    train=True,
+    download=True,
+    transform=transforms.Compose(
+        [
+            transforms.RandomHorizontalFlip(),
+            transforms.ToTensor(),
+            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+        ]
+    ),
+)
+test_dataset = datasets.CIFAR10(
+    root="../data/CIFAR_10",
+    train=False,
+    transform=transforms.Compose(
+        [
+            transforms.RandomHorizontalFlip(),
+            transforms.ToTensor(),
+            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+        ]
+    ),
+)
 
-train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
-                                           batch_size=BATCH_SIZE,
-                                           shuffle=True)
+train_loader = torch.utils.data.DataLoader(
+    dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True
+)
 
-test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
-                                          batch_size=BATCH_SIZE,
-                                          shuffle=False)
+test_loader = torch.utils.data.DataLoader(
+    dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=False
+)
 
 for (X_train, y_train) in train_loader:
     print("X_train: ", X_train.size(), "type: ", X_train.type())
@@ -50,7 +56,7 @@ plt.figure(figsize=(10 * pltsize, pltsize))
 
 for i in range(10):
     plt.subplot(1, 10, i + 1)
-    plt.axis('off')
+    plt.axis("off")
     plt.imshow(np.transpose(X_train[i], (1, 2, 0)))
     plt.title("Class: " + str(y_train[i].item()))
 
@@ -58,28 +64,21 @@ for i in range(10):
 class BasicBlock(nn.Module):
     def __init__(self, in_planes, planes, stride=1):
         super(BasicBlock, self).__init__()
-        self.conv1 = nn.Conv2d(in_planes, planes,
-                               kernel_size=3,
-                               stride=stride,
-                               padding=1,
-                               bias=False)
+        self.conv1 = nn.Conv2d(
+            in_planes, planes, kernel_size=3, stride=stride, padding=1, bias=False
+        )
         self.bn1 = nn.BatchNorm2d(planes)
 
-        self.conv2 = nn.Conv2d(planes, planes,
-                               kernel_size=3,
-                               stride=1,
-                               padding=1,
-                               bias=False)
+        self.conv2 = nn.Conv2d(
+            planes, planes, kernel_size=3, stride=1, padding=1, bias=False
+        )
         self.bn2 = nn.BatchNorm2d(planes)
 
         self.shortcut = nn.Sequential()
         if stride != 1 or in_planes != planes:
             self.shortcut = nn.Sequential(
-                nn.Conv2d(in_planes, planes,
-                          kernel_size=1,
-                          stride=stride,
-                          bias=False),
-                nn.BatchNorm2d(planes)
+                nn.Conv2d(in_planes, planes, kernel_size=1, stride=stride, bias=False),
+                nn.BatchNorm2d(planes),
             )
 
     def forward(self, x):
@@ -95,11 +94,7 @@ class ResNet(nn.Module):
         super(ResNet, self).__init__()
         self.in_planes = 16
 
-        self.conv1 = nn.Conv2d(3, 16,
-                               kernel_size=3,
-                               stride=1,
-                               padding=1,
-                               bias=False)
+        self.conv1 = nn.Conv2d(3, 16, kernel_size=3, stride=1, padding=1, bias=False)
         self.bn1 = nn.BatchNorm2d(16)
 
         self.layer1 = self._make_layer(16, 2, stride=1)
@@ -140,7 +135,10 @@ print(model)
 
 def train(model, train_loader, optimizer, log_interval):
     model.train()
-    for batch_idx, (image, label), in enumerate(train_loader):
+    for (
+        batch_idx,
+        (image, label),
+    ) in enumerate(train_loader):
         image = image.to(DEVICE)
         label = label.to(DEVICE)
         optimizer.zero_grad()
@@ -150,8 +148,15 @@ def train(model, train_loader, optimizer, log_interval):
         optimizer.step()
 
         if batch_idx % log_interval == 0:
-            print("Train Epoch: {} [{}/{}({:.0f}%)]\tTrain loss: {:.6f}".format(Epoch, batch_idx * len(
-                image), len(train_loader.dataset), 100. * batch_idx / len(train_loader), loss.item()))
+            print(
+                "Train Epoch: {} [{}/{}({:.0f}%)]\tTrain loss: {:.6f}".format(
+                    Epoch,
+                    batch_idx * len(image),
+                    len(train_loader.dataset),
+                    100.0 * batch_idx / len(train_loader),
+                    loss.item(),
+                )
+            )
 
 
 def evaluate(model, test_loader):
@@ -169,12 +174,15 @@ def evaluate(model, test_loader):
             correct += prediction.eq(label.view_as(prediction)).sum().item()
 
     test_loss /= len(test_loader.dataset)
-    test_accuracy = 100. * correct / len(test_loader.dataset)
+    test_accuracy = 100.0 * correct / len(test_loader.dataset)
     return test_loss, test_accuracy
 
 
 for Epoch in range(1, EPOCHS + 1):
     train(model, train_loader, optimizer, log_interval=200)
     test_loss, test_accuracy = evaluate(model, test_loader)
-    print("\n[EPOCH: {}], \tTest Loss: {:.4f}, \tTest Accuracy: {:.2f} % \n".format(
-        Epoch, test_loss, test_accuracy))
+    print(
+        "\n[EPOCH: {}], \tTest Loss: {:.4f}, \tTest Accuracy: {:.2f} % \n".format(
+            Epoch, test_loss, test_accuracy
+        )
+    )

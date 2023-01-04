@@ -17,7 +17,7 @@ HIDDEN_UNITS = 128
 CD_K = 5
 EPOCHS = 10
 
-DATA_FOLDER = 'data/mnist'
+DATA_FOLDER = "data/mnist"
 
 CUDA = torch.cuda.is_available()
 CUDA_DEVICE = 0
@@ -27,20 +27,27 @@ if CUDA:
 
 
 ########## LOADING DATASET ##########
-print('Loading dataset...')
+print("Loading dataset...")
 
 train_dataset = torchvision.datasets.MNIST(
-    root=DATA_FOLDER, train=True, transform=torchvision.transforms.ToTensor(), download=True)
-train_loader = torch.utils.data.DataLoader(
-    train_dataset, batch_size=BATCH_SIZE)
+    root=DATA_FOLDER,
+    train=True,
+    transform=torchvision.transforms.ToTensor(),
+    download=True,
+)
+train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=BATCH_SIZE)
 
 test_dataset = torchvision.datasets.MNIST(
-    root=DATA_FOLDER, train=False, transform=torchvision.transforms.ToTensor(), download=True)
+    root=DATA_FOLDER,
+    train=False,
+    transform=torchvision.transforms.ToTensor(),
+    download=True,
+)
 test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=BATCH_SIZE)
 
 
 ########## TRAINING RBM ##########
-print('Training RBM...')
+print("Training RBM...")
 
 rbm = RBM(VISIBLE_UNITS, HIDDEN_UNITS, CD_K, use_cuda=CUDA)
 
@@ -57,11 +64,11 @@ for epoch in range(EPOCHS):
 
         epoch_error += batch_error
 
-    print('Epoch Error (epoch=%d): %.4f' % (epoch, epoch_error * 0.000001))
+    print("Epoch Error (epoch=%d): %.4f" % (epoch, epoch_error * 0.000001))
 
 
 ########## EXTRACT FEATURES ##########
-print('Extracting features...')
+print("Extracting features...")
 
 train_features = np.zeros((len(train_dataset), HIDDEN_UNITS))
 train_labels = np.zeros(len(train_dataset))
@@ -74,9 +81,10 @@ for i, (batch, labels) in enumerate(train_loader):
     if CUDA:
         batch = batch.cuda()
 
-    train_features[i*BATCH_SIZE:i*BATCH_SIZE +
-                   len(batch)] = rbm.sample_hidden(batch).cpu().numpy()
-    train_labels[i*BATCH_SIZE:i*BATCH_SIZE+len(batch)] = labels.numpy()
+    train_features[i * BATCH_SIZE : i * BATCH_SIZE + len(batch)] = (
+        rbm.sample_hidden(batch).cpu().numpy()
+    )
+    train_labels[i * BATCH_SIZE : i * BATCH_SIZE + len(batch)] = labels.numpy()
 
 for i, (batch, labels) in enumerate(test_loader):
     batch = batch.view(len(batch), VISIBLE_UNITS)  # flatten input data
@@ -84,17 +92,17 @@ for i, (batch, labels) in enumerate(test_loader):
     if CUDA:
         batch = batch.cuda()
 
-    test_features[i*BATCH_SIZE:i*BATCH_SIZE +
-                  len(batch)] = rbm.sample_hidden(batch).cpu().numpy()
-    test_labels[i*BATCH_SIZE:i*BATCH_SIZE+len(batch)] = labels.numpy()
+    test_features[i * BATCH_SIZE : i * BATCH_SIZE + len(batch)] = (
+        rbm.sample_hidden(batch).cpu().numpy()
+    )
+    test_labels[i * BATCH_SIZE : i * BATCH_SIZE + len(batch)] = labels.numpy()
 
 
 ########## CLASSIFICATION ##########
-print('Classifying...')
+print("Classifying...")
 
 clf = LogisticRegression()
 clf.fit(train_features, train_labels)
 predictions = clf.predict(test_features)
 
-print('Result: %d/%d' %
-      (sum(predictions == test_labels), test_labels.shape[0]))
+print("Result: %d/%d" % (sum(predictions == test_labels), test_labels.shape[0]))
