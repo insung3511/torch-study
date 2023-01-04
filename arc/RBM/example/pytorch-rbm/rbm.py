@@ -30,20 +30,24 @@ class RBM():
             self.hidden_bias_momentum = self.hidden_bias_momentum.cuda()
 
     def sample_hidden(self, visible_probabilities):
-        hidden_activations = torch.matmul(visible_probabilities, self.weights) + self.hidden_bias
+        hidden_activations = torch.matmul(
+            visible_probabilities, self.weights) + self.hidden_bias
         hidden_probabilities = self._sigmoid(hidden_activations)
         return hidden_probabilities
 
     def sample_visible(self, hidden_probabilities):
-        visible_activations = torch.matmul(hidden_probabilities, self.weights.t()) + self.visible_bias
+        visible_activations = torch.matmul(
+            hidden_probabilities, self.weights.t()) + self.visible_bias
         visible_probabilities = self._sigmoid(visible_activations)
         return visible_probabilities
 
     def contrastive_divergence(self, input_data):
         # Positive phase
         positive_hidden_probabilities = self.sample_hidden(input_data)
-        positive_hidden_activations = (positive_hidden_probabilities >= self._random_probabilities(self.num_hidden)).float()
-        positive_associations = torch.matmul(input_data.t(), positive_hidden_activations)
+        positive_hidden_activations = (
+            positive_hidden_probabilities >= self._random_probabilities(self.num_hidden)).float()
+        positive_associations = torch.matmul(
+            input_data.t(), positive_hidden_activations)
 
         # Negative phase
         hidden_activations = positive_hidden_activations
@@ -51,22 +55,27 @@ class RBM():
         for step in range(self.k):
             visible_probabilities = self.sample_visible(hidden_activations)
             hidden_probabilities = self.sample_hidden(visible_probabilities)
-            hidden_activations = (hidden_probabilities >= self._random_probabilities(self.num_hidden)).float()
+            hidden_activations = (
+                hidden_probabilities >= self._random_probabilities(self.num_hidden)).float()
 
         negative_visible_probabilities = visible_probabilities
         negative_hidden_probabilities = hidden_probabilities
 
-        negative_associations = torch.matmul(negative_visible_probabilities.t(), negative_hidden_probabilities)
+        negative_associations = torch.matmul(
+            negative_visible_probabilities.t(), negative_hidden_probabilities)
 
         # Update parameters
         self.weights_momentum *= self.momentum_coefficient
-        self.weights_momentum += (positive_associations - negative_associations)
+        self.weights_momentum += (positive_associations -
+                                  negative_associations)
 
         self.visible_bias_momentum *= self.momentum_coefficient
-        self.visible_bias_momentum += torch.sum(input_data - negative_visible_probabilities, dim=0)
+        self.visible_bias_momentum += torch.sum(
+            input_data - negative_visible_probabilities, dim=0)
 
         self.hidden_bias_momentum *= self.momentum_coefficient
-        self.hidden_bias_momentum += torch.sum(positive_hidden_probabilities - negative_hidden_probabilities, dim=0)
+        self.hidden_bias_momentum += torch.sum(
+            positive_hidden_probabilities - negative_hidden_probabilities, dim=0)
 
         batch_size = input_data.size(0)
 
@@ -91,5 +100,3 @@ class RBM():
             random_probabilities = random_probabilities.cuda()
 
         return random_probabilities
-
-

@@ -7,11 +7,14 @@ print(S2.split())
 print(S3.split())
 print(list(S1))
 
+
 def indexed_sentence(sentence):
     return [token2idx[token] for token in sentence]
 
+
 def indexed_sentence_unk(sentence):
     return [token2idx.get(token, token2idx['<unk>']) for token in sentence]
+
 
 token2idx = {}
 index = 0
@@ -40,4 +43,3 @@ S4 = '나는 책상 위에 배를 먹었다'
 token2idx = {t: i + 1 for t, i in token2idx.items()}
 token2idx['<unk>'] = 0                                      # unk means unknow
 indexed_sentence_unk(S4.split())
-

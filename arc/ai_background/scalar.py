@@ -9,7 +9,7 @@ scalar2 = torch.tensor([3.])
 print(scalar2)
 
 # [Text] Okay, here is the caculating scalar by scalar.
-# [Text] Just a simple are here. 
+# [Text] Just a simple are here.
 # Get caculating plus scalars
 add_scalar = scalar1 + scalar2
 print(add_scalar)
@@ -25,9 +25,9 @@ print(div_scalar)
 print("############################")
 
 # [Text] And got other solution.
-# Using the torch fuctions. 
+# Using the torch fuctions.
 # P.s. caculating function can only give 2 positional
-print(torch.add(scalar1, scalar2))  
+print(torch.add(scalar1, scalar2))
 print(torch.sub(scalar1, scalar2))
 print(torch.mul(scalar1, scalar2))
 print(torch.div(scalar1, scalar2))

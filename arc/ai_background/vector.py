@@ -1,4 +1,4 @@
-import torch 
+import torch
 
 # In torch tensor using static number like...
 # '3' is '3.'. You have to use write dot after number
@@ -14,7 +14,7 @@ print("###########################")
 add_vector = vector1 + vector2
 print(add_vector)
 
-sub_vector = vector1 - vector2 
+sub_vector = vector1 - vector2
 print(sub_vector)
 
 mul_vector = vector1 * vector2

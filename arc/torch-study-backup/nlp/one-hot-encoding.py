@@ -18,9 +18,9 @@ print(token2idx)
 
 V = len(token2idx)
 token2vec = [
-    ([ 0 if i != token2idx
+    ([0 if i != token2idx
         else 1 for i in range(V)],
-    idx, token) for token, idx in token2idx.items()
+     idx, token) for token, idx in token2idx.items()
 ]
 
 for x in token2vec:
@@ -39,5 +39,5 @@ for sentence in [S1, S2, S3]:
             print("UNK")
 
     print(f"{sentence}: ")
-    print(np.concatenate(onehot_s, axis = 0))
+    print(np.concatenate(onehot_s, axis=0))
     print('\\n')
