@@ -24,7 +24,7 @@ train_dataset = datasets.CIFAR10(root = "../data/CIFAR_10",
 test_dataset = datasets.CIFAR10(root = "../data/CIFAR_10",
                                 train = False,
                                 transform = transforms.ToTensor())
-                        
+
 train_loader = torch.utils.data.DataLoader(dataset = train_dataset,
                                            batch_size = BATCH_SIZE,
                                            shuffle = True)
@@ -98,7 +98,7 @@ class CNN(nn.Module):
         )
 
         self.pool = nn.MaxPool2d(
-            kernel_size = 2, 
+            kernel_size = 2,
             stride = 2
         )
 
@@ -121,7 +121,7 @@ class CNN(nn.Module):
 
         x = self.fc2(x)
         x = F.relu(x)
-         
+
         x = self.fc3(x)
         x = F.relu(x)
 
